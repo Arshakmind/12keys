@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chord Generator</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    .chord-labels {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    .chord-label {
+        margin: 5px;
+        padding: 10px;
+        background-color: #f0f0f0;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .chord-label.active {
+        background-color: #007bff;
+        color: #fff;
+    }
+    .chord-input {
+        margin-bottom: 20px;
+    }
+    .chord-output {
+        display: flex;
+        flex-direction: column; /* Change to column */
+        align-items: center; /* Align rows in center */
+    }
+    .chord-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+    .chord {
+        margin: 5px;
+        padding: 10px;
+        background-color: #f0f0f0;
+        border-radius: 5px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Chord Generator</h1>
+    <div class="chord-labels">
+        <div class="chord-label active" id="C" onclick="toggleChord(this)">C</div>
+        <div class="chord-label active" id="Db" onclick="toggleChord(this)">Db</div>
+        <div class="chord-label active" id="D" onclick="toggleChord(this)">D</div>
+        <div class="chord-label active" id="Eb" onclick="toggleChord(this)">Eb</div>
+        <div class="chord-label active" id="E" onclick="toggleChord(this)">E</div>
+        <div class="chord-label active" id="F" onclick="toggleChord(this)">F</div>
+        <div class="chord-label active" id="F#" onclick="toggleChord(this)">F#</div>
+        <div class="chord-label active" id="G" onclick="toggleChord(this)">G</div>
+        <div class="chord-label active" id="Ab" onclick="toggleChord(this)">Ab</div>
+        <div class="chord-label active" id="A" onclick="toggleChord(this)">A</div>
+        <div class="chord-label active" id="Bb" onclick="toggleChord(this)">Bb</div>
+        <div class="chord-label active" id="B" onclick="toggleChord(this)">B</div>
+    </div>
+    <div class="chord-input">
+        <label for="totalChords">Total Number of Chords:</label>
+        <input type="number" id="totalChords" min="1" value="12"> <!-- Set default value to 12 -->
+    </div>
+    <button onclick="generateChords()">Generate Chords</button>
+    <div class="chord-output" id="chordOutput"></div>
+</div>
+
+<script>
+    function toggleChord(element) {
+        element.classList.toggle('active');
+    }
+
+    function generateChords() {
+        const selectedChords = document.querySelectorAll('.chord-label.active');
+        if (selectedChords.length < 2) {
+            alert("Please select at least 2 chords");
+            return;
+        }
+
+        const totalChords = document.getElementById('totalChords').value;
+        const chordOutput = document.getElementById('chordOutput');
+        chordOutput.innerHTML = '';
+
+        let previousChord = null;
+
+        for (let i = 0; i < totalChords; i++) {
+            if (i % 4 === 0) {
+                const chordRow = document.createElement('div');
+                chordRow.classList.add('chord-row');
+                chordOutput.appendChild(chordRow);
+            }
+            let randomChord;
+            do {
+                randomChord = selectedChords[Math.floor(Math.random() * selectedChords.length)].id;
+            } while (randomChord === previousChord);
+            previousChord = randomChord;
+            const chordElement = document.createElement('div');
+            chordElement.classList.add('chord');
+            chordElement.textContent = randomChord;
+            chordOutput.lastChild.appendChild(chordElement);
+        }
+    }
+</script>
+</body>
+</html>
